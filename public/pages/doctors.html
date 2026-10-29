@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Doctors | New Life Diabetic Hospital, Gandhidham</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="../index.html" class="logo"><div class="logo-icon"><i class="fas fa-heartbeat"></i></div><span>New Life Hospital</span></a>
+      <nav class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="doctors.html" class="active">Doctors</a>
+        <a href="appointment.html">Appointment</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html" class="btn btn-primary btn-sm">Login / Portal</a>
+      </nav>
+      <button class="mobile-toggle"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>Our Specialist Doctors</h1>
+      <p>Experienced diabetologists, endocrinologists and diabetes educators dedicated to your care</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cards-grid" id="doctors-list"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><div class="logo" style="color:white;margin-bottom:16px;"><div class="logo-icon"><i class="fas fa-heartbeat"></i></div><span>New Life Hospital</span></div><p>Specialized Diabetic Hospital, Gandhidham.</p></div>
+        <div><h4>Quick Links</h4><a href="about.html">About</a><br><a href="services.html">Services</a><br><a href="appointment.html">Appointment</a></div>
+        <div><h4>Portals</h4><a href="login.html">Patient Login</a><br><a href="login.html">Doctor Panel</a></div>
+        <div><h4>Contact</h4><p>Plot 45, Sector 8, Gandhidham<br>+91 2836-123456</p></div>
+      </div>
+      <div class="footer-bottom">&copy; 2026 New Life Diabetic Hospital.</div>
+    </div>
+  </footer>
+  <div class="emergency-float">
+    <button class="whatsapp-btn" onclick="openWhatsApp()"><i class="fab fa-whatsapp"></i></button>
+    <button class="emergency-btn" onclick="callEmergency()"><i class="fas fa-phone-alt"></i></button>
+  </div>
+  <script src="../js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const doctors = DB.get('doctors');
+      document.getElementById('doctors-list').innerHTML = doctors.map((d, i) => `
+        <div class="card doctor-card" data-animate data-delay="${(i%4)+1}" style="text-align:left;">
+          <div style="text-align:center;">
+            ${d.photo 
+              ? `<div style="width:150px;height:150px;border-radius:50%;overflow:hidden;margin:0 auto 16px;box-shadow:0 4px 14px rgba(0,0,0,0.15);border:3px solid #e0f2fe;"><img src="../images/doctor.jpg" alt="${d.name}" style="width:100%;height:100%;object-fit:cover;object-position:top;" /></div>`
+              : `<div class="doctor-img">${(d.name.split(' ').filter(n=>n.length>2).map(n=>n[0]).slice(0,2).join('')) || d.name.slice(0,2)}</div>`
+            }
+            <h3 style="text-align:center;margin-bottom:4px;">${d.name}</h3>
+            <div class="specialty" style="text-align:center;">${d.specialty}</div>
+          </div>
+          <p style="color:var(--primary);font-size:0.85rem;font-weight:600;margin:10px 0 6px;"><i class="fas fa-graduation-cap"></i> ${d.qualification || ''}</p>
+          <p style="color:var(--gray);font-size:0.88rem;margin-bottom:8px;line-height:1.5;">${d.about || ''}</p>
+          <p style="font-size:0.85rem;color:var(--gray);margin-bottom:4px;"><i class="fas fa-briefcase"></i> ${d.experience} experience · ${d.patients}+ patients</p>
+          <p style="font-size:0.85rem;color:var(--gray);margin-bottom:4px;"><i class="fas fa-clock"></i> ${d.timing || 'By appointment'}</p>
+          <p style="font-size:0.85rem;color:var(--gray);margin-bottom:4px;"><i class="fas fa-phone"></i> ${d.phone}</p>
+          <p style="font-size:0.85rem;color:var(--gray);margin-bottom:14px;"><i class="fas fa-envelope"></i> ${d.email}</p>
+          <a href="appointment.html?doctor=${d.id}" class="btn btn-primary btn-sm w-full">Book Appointment</a>
+        </div>
+      `).join('');
+      initAnimations();
+    });
+  </script>
+</body>
+</html>
