@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patient Portal | New Life Hospital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="../index.html" class="logo"><div class="logo-icon"><i class="fas fa-heartbeat"></i></div><span>New Life Hospital</span></a>
+      <nav class="nav-links">
+        <span id="user-greeting" style="font-weight:600;color:var(--primary);"></span>
+        <button onclick="Auth.logout()" class="btn btn-secondary btn-sm">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="panel-layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3>Patient Portal</h3>
+        <p id="side-name"></p>
+      </div>
+      <nav class="sidebar-menu">
+        <a href="#dashboard" class="active" data-section="dashboard"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="#reports" data-section="reports"><i class="fas fa-file-medical"></i> My Reports</a>
+        <a href="#appointments" data-section="appointments"><i class="fas fa-calendar"></i> Appointments</a>
+        <a href="#profile" data-section="profile"><i class="fas fa-user"></i> Profile</a>
+        <a href="appointment.html"><i class="fas fa-plus-circle"></i> Book New</a>
+      </nav>
+    </aside>
+
+    <main class="panel-main">
+      <!-- Dashboard -->
+      <section id="sec-dashboard">
+        <div class="panel-header">
+          <h1>Welcome back</h1>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-value" id="stat-reports">0</div>
+            <div class="stat-label">Available Reports</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-appts">0</div>
+            <div class="stat-label">Upcoming Appointments</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" style="color:var(--danger);">24/7</div>
+            <div class="stat-label">Emergency Support</div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:12px;">Quick Actions</h3>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="appointment.html" class="btn btn-primary"><i class="fas fa-calendar-plus"></i> Book Appointment</a>
+            <button onclick="showSection('reports')" class="btn btn-secondary"><i class="fas fa-download"></i> Download Reports</button>
+            <button onclick="openWhatsApp()" class="btn btn-accent"><i class="fab fa-whatsapp"></i> WhatsApp Support</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reports -->
+      <section id="sec-reports" class="hidden">
+        <div class="panel-header">
+          <h1>My Reports</h1>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Report Title</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Doctor</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="reports-table"></tbody>
+          </table>
+        </div>
+        <p style="margin-top:12px;font-size:0.85rem;color:var(--gray);">Click Download to save a sample PDF report (demo).</p>
+      </section>
+
+      <!-- Appointments -->
+      <section id="sec-appointments" class="hidden">
+        <div class="panel-header">
+          <h1>My Appointments</h1>
+          <a href="appointment.html" class="btn btn-primary btn-sm">Book New</a>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Doctor</th>
+                <th>Type</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="appts-table"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Profile -->
+      <section id="sec-profile" class="hidden">
+        <div class="panel-header">
+          <h1>My Profile</h1>
+        </div>
+        <div class="form-card" style="max-width:500px;margin:0;">
+          <div id="profile-info"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    const session = Auth.require(['patient']);
+    if (!session) throw new Error('Auth required');
+
+    document.getElementById('user-greeting').textContent = session.name;
+    document.getElementById('side-name').textContent = session.name;
+
+    // Load data
+    const reports = DB.get('reports').filter(r => r.patientId === session.patientId || r.patientId === session.id);
+    const appts = DB.get('appointments').filter(a => a.phone && (a.patientName === session.name));
+    const patient = DB.get('patients').find(p => p.id === session.patientId || p.id === session.id);
+
+    document.getElementById('stat-reports').textContent = reports.length;
+    document.getElementById('stat-appts').textContent = appts.filter(a => a.status !== 'completed' && a.status !== 'cancelled').length;
+
+    document.getElementById('reports-table').innerHTML = reports.length ? reports.map(r => `
+      <tr>
+        <td>${r.title}</td>
+        <td>${r.type}</td>
+        <td>${formatDate(r.date)}</td>
+        <td>${r.doctor}</td>
+        <td><button class="btn btn-primary btn-sm" onclick="downloadReport('${r.id}','${r.title}')"><i class="fas fa-download"></i> Download</button></td>
+      </tr>
+    `).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--gray);">No reports available yet.</td></tr>';
+
+    document.getElementById('appts-table').innerHTML = appts.length ? appts.map(a => `
+      <tr>
+        <td>${formatDate(a.date)}</td>
+        <td>${a.time}</td>
+        <td>${getDoctorName(a.doctorId)}</td>
+        <td>${a.type}</td>
+        <td><span class="badge-status badge-${a.status}">${a.status}</span></td>
+      </tr>
+    `).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--gray);">No appointments found.</td></tr>';
+
+    if (patient) {
+      document.getElementById('profile-info').innerHTML = `
+        <p><strong>Name:</strong> ${patient.name}</p>
+        <p><strong>Email:</strong> ${patient.email}</p>
+        <p><strong>Phone:</strong> ${patient.phone}</p>
+        <p><strong>Date of Birth:</strong> ${formatDate(patient.dob)}</p>
+        <p><strong>Blood Group:</strong> ${patient.bloodGroup}</p>
+        <p><strong>Diabetes Type:</strong> ${patient.diabetesType}</p>
+      `;
+    }
+
+    // Navigation
+    document.querySelectorAll('.sidebar-menu a[data-section]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        showSection(link.dataset.section);
+        document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+
+    function showSection(name) {
+      ['dashboard','reports','appointments','profile'].forEach(s => {
+        document.getElementById('sec-' + s).classList.toggle('hidden', s !== name);
+      });
+    }
+
+    function downloadReport(id, title) {
+      // Generate a simple text-based "PDF" download for demo
+      const content = `NEW LIFE DIABETIC HOSPITAL, GANDHIDHAM\n\nMedical Report\n==============\nTitle: ${title}\nReport ID: ${id}\nGenerated: ${new Date().toLocaleString()}\n\nThis is a demo report download.\nIn production, this would be a real PDF from the hospital system.\n\nPatient: ${session.name}\n\n---\nNew Life Diabetic Hospital\nPlot 45, Sector 8, Gandhidham, Gujarat 370201\nPhone: +91 2836-123456`;
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = title.replace(/\s+/g, '-') + '.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

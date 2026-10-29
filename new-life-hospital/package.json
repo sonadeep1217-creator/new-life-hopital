@@ -1,0 +1,19 @@
+{
+  "name": "new-life-hospital",
+  "version": "1.0.0",
+  "description": "New Life Diabetic Hospital - Gandhidham - Full website with Patient, Doctor & Admin portals",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js"
+  },
+  "keywords": ["hospital", "diabetes", "gandhidham"],
+  "author": "New Life Hospital",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "uuid": "^9.0.0"
+  }
+}
