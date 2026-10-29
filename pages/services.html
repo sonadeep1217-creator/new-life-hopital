@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services | New Life Diabetic Hospital, Gandhidham</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <a href="../index.html" class="logo"><div class="logo-icon"><i class="fas fa-heartbeat"></i></div><span>New Life Hospital</span></a>
+      <nav class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html" class="active">Services</a>
+        <a href="doctors.html">Doctors</a>
+        <a href="appointment.html">Appointment</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html" class="btn btn-primary btn-sm">Login / Portal</a>
+      </nav>
+      <button class="mobile-toggle"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <h1>Our Services</h1>
+      <p>Comprehensive diabetes care under one roof — consultation, diagnostics, foot care, nutrition & emergency</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cards-grid">
+        <div class="card" data-animate data-delay="1">
+          <div class="card-icon"><i class="fas fa-stethoscope"></i></div>
+          <h3>Diabetes Consultation</h3>
+          <p>Detailed evaluation by senior diabetologists for Type 1, Type 2, LADA, MODY and Gestational Diabetes. Personalized medication, insulin titration and lifestyle advice.</p>
+        </div>
+        <div class="card" data-animate data-delay="2">
+          <div class="card-icon"><i class="fas fa-flask"></i></div>
+          <h3>Laboratory & Diagnostics</h3>
+          <p>HbA1c, Fasting & PP Blood Sugar, Lipid Profile, Kidney Function (eGFR, Creatinine), Urine Microalbumin, Thyroid Profile, CBC and more — same-day reports.</p>
+        </div>
+        <div class="card" data-animate data-delay="3">
+          <div class="card-icon"><i class="fas fa-shoe-prints"></i></div>
+          <h3>Diabetic Foot Clinic</h3>
+          <p>Neuropathy screening, vascular assessment, ulcer management, offloading, wound debridement and prevention of amputation. Specialized footwear advice.</p>
+        </div>
+        <div class="card" data-animate data-delay="4">
+          <div class="card-icon"><i class="fas fa-apple-alt"></i></div>
+          <h3>Nutrition Counseling</h3>
+          <p>Individualized diet plans by certified diabetes educators. Carbohydrate counting, weight management and cultural food adaptations for Gujarati cuisine.</p>
+        </div>
+        <div class="card" data-animate data-delay="1">
+          <div class="card-icon"><i class="fas fa-heartbeat"></i></div>
+          <h3>Cardiac Risk Assessment</h3>
+          <p>ECG, lipid management and cardiovascular risk scoring for diabetic patients to prevent heart disease.</p>
+        </div>
+        <div class="card" data-animate data-delay="2">
+          <div class="card-icon"><i class="fas fa-eye"></i></div>
+          <h3>Retinopathy Screening</h3>
+          <p>Fundus examination and referral coordination for diabetic retinopathy detection and management.</p>
+        </div>
+        <div class="card" data-animate data-delay="3">
+          <div class="card-icon"><i class="fas fa-syringe"></i></div>
+          <h3>Insulin & CGM Training</h3>
+          <p>Hands-on training for insulin injection techniques, insulin pumps and Continuous Glucose Monitoring systems.</p>
+        </div>
+        <div class="card" data-animate data-delay="4">
+          <div class="card-icon"><i class="fas fa-ambulance"></i></div>
+          <h3>24×7 Emergency Care</h3>
+          <p>Immediate management of hypoglycemia, hyperglycemia, DKA and other diabetes emergencies. WhatsApp & phone support available round the clock.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:white;">
+    <div class="container text-center" data-animate>
+      <h2 style="font-size:1.8rem;font-weight:800;margin-bottom:12px;">Ready to take control of your diabetes?</h2>
+      <p style="color:var(--gray);margin-bottom:24px;">Book a consultation with our specialists today.</p>
+      <a href="appointment.html" class="btn btn-primary btn-lg"><i class="fas fa-calendar-check"></i> Book Appointment</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><div class="logo" style="color:white;margin-bottom:16px;"><div class="logo-icon"><i class="fas fa-heartbeat"></i></div><span>New Life Hospital</span></div><p>Specialized Diabetic Hospital, Gandhidham.</p></div>
+        <div><h4>Quick Links</h4><a href="about.html">About</a><br><a href="services.html">Services</a><br><a href="doctors.html">Doctors</a></div>
+        <div><h4>Portals</h4><a href="login.html">Patient Login</a><br><a href="login.html">Doctor / Admin</a></div>
+        <div><h4>Contact</h4><p>Plot 45, Sector 8, Gandhidham<br>+91 2836-123456</p></div>
+      </div>
+      <div class="footer-bottom">&copy; 2026 New Life Diabetic Hospital.</div>
+    </div>
+  </footer>
+  <div class="emergency-float">
+    <button class="whatsapp-btn" onclick="openWhatsApp()"><i class="fab fa-whatsapp"></i></button>
+    <button class="emergency-btn" onclick="callEmergency()"><i class="fas fa-phone-alt"></i></button>
+  </div>
+  <script src="../js/app.js"></script>
+</body>
+</html>
